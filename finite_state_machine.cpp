@@ -84,31 +84,3 @@ void FiniteStateMachine::immediateTransitionTo(State* state){
 State* FiniteStateMachine::getCurrentState() {
   return _currentState;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
