@@ -2,7 +2,6 @@
   #define __FUNCTIONCONTROL_H
 
   #include <Arduino.h>
-  #include "Chrono.h"
 
   int   path_type      (int sensorStateDX, int sensorStateSX);
   bool  check_obstacle (float dist_obs);
