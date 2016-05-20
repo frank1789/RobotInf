@@ -1,106 +1,119 @@
 #include "functioncontrol.h"
 
-/*FUNZIONE path_type
-  in questa funzione si riceve in ingresso 
-  gli interi restitutiti dai metodi dei line follewer
-  viene inizializzata una varibile temporanea 
-  che individua il tipo di percorso che si appresta ad 
-  effetuare restituendo un valore intero.
-  Il confronto dei valori ricevuti dai sensori viene 
-  cosi confrontato:
-  CASE                          DX, SX
-  1 -> GO_FORWARD           ==  1, 2  verificato
-  2 -> TURN_LEFT_SOFT       ==  1, 0
-  3 -> TURN_LEFT_HARD       ==  3, 0
-  4 -> TURN_LEFT_VERYHARD   ==  3, 1
-  5 -> TURN_RIGHT_SOFT      ==  0, 2
-  6 -> TURN_RIGHT_HARD      ==  0, 3
-  7 -> TURN_RIGHT_VERYHARD  ==  2, 3
-  8 -> NO_LINE              ==  3, 3  verificato
+/*FUNZIONE path_error
+  in questa funzione in ingresso vengono ricevuti
+  due interi ricavati dai metodi dei line follewer
+  e in uscita viene restituito un intero che individua la posizione del 
+  robot rispetto alla linea da seguire (error = output - setpoint).
+  
+  Sulla base dei valori ricevuti dai sensori si ottengono i seguenti casi:
+
+                                   (X=nero; O=bianco)
+                          DX  SX        SX DX        Error
+  GO_FORWARD           ==  1 , 2       O X X O         0  (line = black & background = white) 
+  TURN_LEFT_VERY_SOFT  ==  3 , 2       O X O O         1
+  TURN_LEFT_SOFT       ==  1 , 0       X X X O         2
+  TURN_LEFT_HARD       ==  3 , 0       X X O O         3
+  TURN_LEFT_VERYHARD   ==  3 , 1       X O O O         4
+  TURN_RIGHT_VERY_SOFT ==  1 , 3       O O X O        -1
+  TURN_RIGHT_SOFT      ==  0 , 2       O X X X        -2
+  TURN_RIGHT_HARD      ==  0 , 3       O O X X        -3
+  TURN_RIGHT_VERYHARD  ==  2 , 3       O O O X        -4
+  NO_LINE              ==  3 , 3       O O O O        100    per ora con 100 sto ad indicare di andare in spirale
+  EXCEPTION1           ==  2 , 0       X X O X         1 
+  EXCEPTION2           ==  0 , 1       X O X X        -1  
+  GO_FORWARD_bis       ==  2 , 1       X O O X         0    (line = white & background = black) 
+  CROSS                ==  0 , 0       X X X X         0     per ora lo faccio andare dritto
+  EXCEPTION3     	     ==  2 , 2	     O X O X         0     quando trova questo caso strano per ora va dritto
+  EXCEPTION4           ==  1 , 1       X O X O         0     quando trova questo caso strano per ora va dritto
 */
-int path_type(int sensorStateDX, int sensorStateSX){
-  int tmp = 0;
+
+int path_error(int sensorStateDX, int sensorStateSX){
+  int error = 0;
   
   if(sensorStateDX == 1 && sensorStateSX == 2){
-    tmp = 1; 
+    error = 0; 
   }  //GO_FORWARD 
 
   else if(sensorStateDX == 3 && sensorStateSX == 2){
-     tmp = 8;
+     error = 1;
   }//TURN_LEFT_VERY_SOFT
 
   else if(sensorStateDX == 1 && sensorStateSX == 0){
-    tmp = 2;
+    error = 2;
   }  //TURN_LEFT_SOFT
   
   else if(sensorStateDX == 3 && sensorStateSX == 0){
-    tmp = 3;
+    error = 3;
   }  //TURN_LEFT_HARD 
   
   else if(sensorStateDX == 3 &&  sensorStateSX == 1){
-    tmp = 4;
+    error = 4;
   }  //TURN_LEFT_VERYHARD
     
   else if(sensorStateDX == 1 && sensorStateSX == 3){
-    tmp = 9;
+    error = -1;
   }  //TURN_RIGHT_VERY_SOFT
 
   else if(sensorStateDX == 0 && sensorStateSX == 2){
-    tmp = 5;
+    error = -2;
     }  //TURN_RIGHT_SOFT
   
   else if(sensorStateDX == 0 && sensorStateSX == 3){
-    tmp = 6;
+    error = -3;
   }  //TURN_RIGHT_HARD 
   
   else if(sensorStateDX == 2 && sensorStateSX == 3){
-    tmp = 7;
+    error = -4;
   }  //TURN_RIGHT_VERYHARD
 
   else if(sensorStateDX == 3 && sensorStateSX == 3){
-    tmp = 10;
+    error = 100;
   }  //NO_LINE
 
    else if(sensorStateDX == 2 && sensorStateSX == 0){
-    tmp = 8;
-  }  //NO_LINE
+    error = 1;
+  }  //EXCEPTION1
 
    else if(sensorStateDX == 0 && sensorStateSX == 1){
-    tmp = 9;
-  }  //NO_LINE
+    error = -1;
+  }  //EXCEPTION2 
 
    else if(sensorStateDX == 2 && sensorStateSX == 1){
-    tmp = 4;
-  }  //NO_LINE
+    error = 0;
+  }  //GO_FORWARD_bis
 
    else if(sensorStateDX == 0 && sensorStateSX == 0){
-    tmp = 11;
-  }  //NO_LINE
+    error = 0;
+  }  //CROSS
 
    else if(sensorStateDX == 2 && sensorStateSX == 2){
-    tmp = 3;
-  }  //NO_LINE
+    error = 0;
+  }  //EXCEPTION3
 
    else if(sensorStateDX == 1 && sensorStateSX == 1){
-    tmp = 3;
-  }  //NO_LINE
-  return tmp;
+    error = 0;
+  }  //EXCEPTION4 
+  return error;
 }
 
 /*FUNZIONE LINEA SPEZZATA
-  In questa funzione vien slavata l'ultima lettura della vairabile path
+  In questa funzione vien slavata l'ultima lettura della vairabile e
   il robot prosegue fino a quando non ritrova la linea, altrimenti....
   è da studiare in laboratorio
 */
-int interrupt_line(int path){
-  static int last_path_read = path;
+
+/*
+int interrupt_line(int e){
+  static int last_path_read = e;
     int last_path;
   if(last_path_read == last_path){
     //motorSpeed = motorSpeed / 2;
   }
   else exit;  
-  return path;
+  return e;
 }
+*/
 
 /*FUNZIONE AVANZAMENTO A SPIRALE
   Con questa funzione si ricerca la linea da seguire
