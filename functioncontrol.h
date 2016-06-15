@@ -4,7 +4,7 @@
 #include <Arduino.h>
 #include "input_data.h"
 
-  int   path_error     (int path);
+int path_error (int path);
   
   
 #endif

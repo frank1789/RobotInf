@@ -3,7 +3,6 @@
 #include "functioncontrol.h"
 #include "pid.h"
 
-
 MeLineFollower lineFinderDX(PORT_3); /* Line Finder module can only be connected to PORT_3, PORT_4, PORT_5, PORT_6 of base shield. */
 MeLineFollower lineFinderSX(PORT_4);
 
@@ -33,16 +32,12 @@ MeDCMotor motorSX(M2);  // value: between -255 and 255.
 
 void setup()
 {
-  
-  Serial.begin(115200);
-  
+  Serial.begin(115200);  
 }
 
 void loop()
 {
-
   stateMachine.update();
-  
   delay(200);
 }
 /*
@@ -168,7 +163,7 @@ void line_follower(){
   //lettura dal sensore a ultrasuoni
   float dist_obs = ultraSensor.distanceCm();
 
-  //verifica costantemente se ci sono oggetti sul percorso e segue la linea se ci sono ostacoli torna in idle
+  //verifica costantemente se ci sono oggetti sul percorso e segue la linea se ci sono ostacoli torna in Idle
   if (check_obstacle (dist_obs) == true){
     int path  = read_path(sensorStateDX, sensorStateSX);
     int error = path_error(path);
@@ -183,6 +178,6 @@ void line_follower(){
 
 void stop(){
 	Serial.println("Stato STOP");
-  	motorDX.stop();
-  	motorSX.stop();
+  motorDX.stop();
+  motorSX.stop();
 }

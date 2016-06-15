@@ -1,6 +1,5 @@
 #include "functioncontrol.h"
 
-
 /*FUNZIONE path_error
   in questa funzione in ingresso vengono ricevuti
   due interi ricavati dai metodi dei line follewer
@@ -202,20 +201,3 @@ int path_error(int path){
   }
   return error;
 }
-
-/*FUNZIONE speed
-  verifica che le lavelocità assegnata ai motori non superi quella massima
-  o minima consentita
-
-
-uint8_t speed(uint8_t const motorSpeedMAX,
-              uint8_t const motorSpeedMIN,
-              uint8_t motorSpeed){
-  if(motorSpeed >= motorSpeedMAX) return speed;
-  else{ return }
-  if (motorSpeed <= motorSpeedMIN) return speed;
-  else{ return }
-
-}
-*/
-
