@@ -1,6 +1,7 @@
 #include "MeOrion.h"
 #include "finite_state_machine.h"
 #include "functioncontrol.h"
+#include "pid.h"
 
 
 MeLineFollower lineFinderDX(PORT_3); /* Line Finder module can only be connected to PORT_3, PORT_4, PORT_5, PORT_6 of base shield. */
@@ -27,8 +28,8 @@ MeDCMotor motorSX(M2);  // value: between -255 and 255.
   FiniteStateMachine stateMachine = FiniteStateMachine(&Init);
 
 //dichiarazione velocità motore
-  uint8_t const motorSpeedMAX =  150;
-  uint8_t const motorSpeedMIN = -150;
+  uint8_t const motorSpeedMAX =  255;
+  uint8_t const motorSpeedMIN = -255;
   uint8_t motorSpeed = 40;
 //varibili lettura sensori di linea
   int sensorStateDX, sensorStateSX;
@@ -36,7 +37,6 @@ MeDCMotor motorSX(M2);  // value: between -255 and 255.
 
 // variabile sensore ultrasuoni
   float dist_obs; 
-
 
 void setup()
 {
@@ -52,7 +52,7 @@ void loop()
   
   delay(200);
 }
-
+/*
 //Funzione risoluzione percorso
 void solve_path(int path){
   switch(path)
@@ -149,7 +149,7 @@ void solve_path(int path){
     default: stateMachine.transitionTo(&Stop); break;
   }
 }
-
+*/
 void idle () {
   Serial.println("Stato IDLE");
   motorDX.stop();
@@ -172,11 +172,12 @@ void line_follower(){
   dist_obs = ultraSensor.distanceCm();
   if (check_obstacle (dist_obs) == true){
     //funzione con ingresso di dati letti e restituisce il tipo di path
-    path = path_type(sensorStateDX, sensorStateSX);
-      solve_path(path);
-    }
-  
-    else stateMachine.transitionTo(&Idle);
+    path  = read_path(sensorStateDX, sensorStateSX);
+    int error = path_error(path);
+    motorDX.run(-motorSpeed - calculatePID(error));
+    motorDX.run( motorSpeed - calculatePID(error));
+  }
+  else stateMachine.transitionTo(&Idle);
 }
 
 void stop(){

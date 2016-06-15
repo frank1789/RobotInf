@@ -1,5 +1,6 @@
 #include "functioncontrol.h"
 
+
 /*FUNZIONE path_error
   in questa funzione in ingresso vengono ricevuti
   due interi ricavati dai metodi dei line follewer
@@ -26,7 +27,7 @@
   CROSS                ==  0 , 0       X X X X         0     per ora lo faccio andare dritto
   EXCEPTION3     	     ==  2 , 2	     O X O X         0     quando trova questo caso strano per ora va dritto
   EXCEPTION4           ==  1 , 1       X O X O         0     quando trova questo caso strano per ora va dritto
-*/
+
 
 int path_error(int sensorStateDX, int sensorStateSX){
   int error = 0;
@@ -96,84 +97,125 @@ int path_error(int sensorStateDX, int sensorStateSX){
   }  //EXCEPTION4 
   return error;
 }
-
-/*FUNZIONE LINEA SPEZZATA
-  In questa funzione vien slavata l'ultima lettura della vairabile e
-  il robot prosegue fino a quando non ritrova la linea, altrimenti....
-  è da studiare in laboratorio
 */
+int path_error(int path){
+  int error;
+  switch(path)
+  {
+    case 1 : {
+      Serial.println("VAI DRITTO!!");
+      error = 0;
+      break;
+    }
+  
+    case 2 : {
+      Serial.println("Turning left SOFT");
+      error = 2;
+      break;
+    }
+    
+    case 3 : {
+      Serial.println("Turning left HARD");
+      error = 3;
+      break;
+    }
 
-/*
-int interrupt_line(int e){
-  static int last_path_read = e;
-    int last_path;
-  if(last_path_read == last_path){
-    //motorSpeed = motorSpeed / 2;
+    case 4 : {
+      Serial.println("Turning left VERY HARD");
+      error = 4;
+      break;
+    }
+
+    case 5 : {
+      Serial.println("Turning right SOFT");
+      error = -1;
+      break;
+    }
+
+    case 6 : {
+      Serial.println("Turning right HARD");
+      error = -3;
+      break;
+    }
+
+    case 7 : {
+      Serial.println("Turning right VERY HARD");
+      error = -4;
+      break;
+    }
+
+    case 8 : {
+      Serial.println("Turning left VERY SOFT");
+      error = 0;
+      break;
+    }
+
+    case 9: {
+      Serial.println("Turning right VERY SOFT");
+      error = 0;
+      break;
+    }
+
+    case 10: {
+      Serial.println("case 10");
+      error = 0;
+      break;
+    }
+
+    case 11 : {
+      Serial.println("case 11");
+      error = 0;
+      break;
+    }
+
+    case 12:  {
+      Serial.println("case 12");
+      error = 0;
+      break;
+    }
+
+    case 13:{
+      Serial.println("case 13");
+      error = 0;
+      break;
+    }
+
+    case 14:{
+      Serial.println("case 14");
+      error = 0;
+      break;
+    }
+
+    case 15:{
+      Serial.println("case 15");
+      error =0 ;
+      break;
+    }
+
+    case 16:{
+      Serial.println("case 16");
+      error = 0;
+      break;
+    }
+
+    default:  break;
   }
-  else exit;  
-  return e;
+  return error;
+}
+
+/*FUNZIONE speed
+  verifica che le lavelocità assegnata ai motori non superi quella massima
+  o minima consentita
+
+
+uint8_t speed(uint8_t const motorSpeedMAX,
+              uint8_t const motorSpeedMIN,
+              uint8_t motorSpeed){
+  if(motorSpeed >= motorSpeedMAX) return speed;
+  else{ return }
+  if (motorSpeed <= motorSpeedMIN) return speed;
+  else{ return }
+
 }
 */
 
-/*FUNZIONE AVANZAMENTO A SPIRALE
-  Con questa funzione si ricerca la linea da seguire
-  facendo compiere al robot via via una spirale 
-  viene incrementata la velocità da passare al motore.
-  ATTENZIONE QUESTA FUNZIONE VA FORNITA AD UN SOLO MOTORE
-   ALTRIMENTI RUOTERA SUL PROPRIO ASSE...CIRCA
-*/
-int feed_spiral(int a, int motorSpeedMAX){
- 	int count = 5;
-    int velocity;
-	if(velocity < motorSpeedMAX){ 
-    	velocity = a + count ;
-    	Serial.println(velocity);
-   		}
-  	Serial.println("Movimento a spirale");
-
-	return velocity;
-}
-
-int feed_spiral2(int a, int motorSpeedMAX){
- 	int count = 5;
- 	static int velocity {0};
-	if(velocity < motorSpeedMAX){ 
-		
-    	velocity = a + count ;
-    	Serial.println(velocity);
-   		}
-  	Serial.println("Movimento a spirale");
-
-	return velocity;
-}
-
-
-/*FUNZIONE PER IL SUPERAMENTO DEGLI INCROCI
-  Nella funzione crossbreed il robot decide quale
-  direzione prendere in base alla sceta precedente 
-  fatta in modo da esplorarea turno tutte le possibili 
-  vie. Facendo variare la variabile booleana
-*/
-
-bool crossbreed(){
-  static bool direction;
-  bool choice_dir = 1;
-  choice_dir = direction;
-  if (direction == 1){
-    choice_dir = 0;
-  }
-  else{
-    choice_dir = 1;
-  }
-    return direction;
-}  
-
-bool check_obstacle(float dist_obs){
-  bool check {false}; 
-  Serial.print("distanza: ");
-  Serial.print(dist_obs);
-  Serial.println(" cm");
-  if (dist_obs >= 5.00 || dist_obs == 0.00) check = true;
-  else check = false;
-  return check;
-}

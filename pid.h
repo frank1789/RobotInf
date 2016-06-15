@@ -1,7 +1,6 @@
 #ifndef __PID_H
-  #define __PID_H
-
-  #include <Arduino.h>
+#define __PID_H
+#include <Arduino.h>
 
 float Kp=50;
 float Ki=0;
