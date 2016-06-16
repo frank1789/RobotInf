@@ -5,6 +5,6 @@
 #include "input_data.h"
 
 int path_error (int path);
-  
+uint8_t motorspeed(uint8_t motorSpeed);
   
 #endif

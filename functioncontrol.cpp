@@ -24,180 +24,179 @@
   EXCEPTION2           ==  0 , 1       X O X X        -1  
   GO_FORWARD_bis       ==  2 , 1       X O O X         0    (line = white & background = black) 
   CROSS                ==  0 , 0       X X X X         0     per ora lo faccio andare dritto
-  EXCEPTION3     	     ==  2 , 2	     O X O X         0     quando trova questo caso strano per ora va dritto
+  EXCEPTION3     	  	 ==  2 , 2	   	 O X O X         0     quando trova questo caso strano per ora va dritto
   EXCEPTION4           ==  1 , 1       X O X O         0     quando trova questo caso strano per ora va dritto
-
-
-int path_error(int sensorStateDX, int sensorStateSX){
-  int error = 0;
-  
-  if(sensorStateDX == 1 && sensorStateSX == 2){
-    error = 0; 
-  }  //GO_FORWARD 
-
-  else if(sensorStateDX == 3 && sensorStateSX == 2){
-     error = 1;
-  }//TURN_LEFT_VERY_SOFT
-
-  else if(sensorStateDX == 1 && sensorStateSX == 0){
-    error = 2;
-  }  //TURN_LEFT_SOFT
-  
-  else if(sensorStateDX == 3 && sensorStateSX == 0){
-    error = 3;
-  }  //TURN_LEFT_HARD 
-  
-  else if(sensorStateDX == 3 &&  sensorStateSX == 1){
-    error = 4;
-  }  //TURN_LEFT_VERYHARD
-    
-  else if(sensorStateDX == 1 && sensorStateSX == 3){
-    error = -1;
-  }  //TURN_RIGHT_VERY_SOFT
-
-  else if(sensorStateDX == 0 && sensorStateSX == 2){
-    error = -2;
-    }  //TURN_RIGHT_SOFT
-  
-  else if(sensorStateDX == 0 && sensorStateSX == 3){
-    error = -3;
-  }  //TURN_RIGHT_HARD 
-  
-  else if(sensorStateDX == 2 && sensorStateSX == 3){
-    error = -4;
-  }  //TURN_RIGHT_VERYHARD
-
-  else if(sensorStateDX == 3 && sensorStateSX == 3){
-    error = 100;
-  }  //NO_LINE
-
-   else if(sensorStateDX == 2 && sensorStateSX == 0){
-    error = 1;
-  }  //EXCEPTION1
-
-   else if(sensorStateDX == 0 && sensorStateSX == 1){
-    error = -1;
-  }  //EXCEPTION2 
-
-   else if(sensorStateDX == 2 && sensorStateSX == 1){
-    error = 0;
-  }  //GO_FORWARD_bis
-
-   else if(sensorStateDX == 0 && sensorStateSX == 0){
-    error = 0;
-  }  //CROSS
-
-   else if(sensorStateDX == 2 && sensorStateSX == 2){
-    error = 0;
-  }  //EXCEPTION3
-
-   else if(sensorStateDX == 1 && sensorStateSX == 1){
-    error = 0;
-  }  //EXCEPTION4 
-  return error;
-}
 */
-int path_error(int path){
-  int error;
-  switch(path)
-  {
-    case 1 : {
-      Serial.println("VAI DRITTO!!");
-      error = 0;
-      break;
-    }
-  
-    case 2 : {
-      Serial.println("Turning left SOFT");
-      error = 2;
-      break;
-    }
-    
-    case 3 : {
-      Serial.println("Turning left HARD");
-      error = 3;
-      break;
-    }
+  int path_error(int path){
+  	int error;
+  	switch(path)
+  	{
+  		case 1 : {
+  			Serial.print("GO_FORWARD");
+  			Serial.print(", ");
+  			Serial.print(path);
+  			Serial.print(", error: ");
+  			error = 0;
+  			Serial.println(error);
+  			break;
+  		}
 
-    case 4 : {
-      Serial.println("Turning left VERY HARD");
-      error = 4;
-      break;
-    }
+  		case 2 : {
+  			Serial.print("Turning left SOFT");
+  			Serial.print(", ");
+  			Serial.print(path);
+  			Serial.print(", error: ");
+  			error = 2;
+  			Serial.println(error);
+  			break;
+  		}
 
-    case 5 : {
-      Serial.println("Turning right SOFT");
-      error = -1;
-      break;
-    }
+  		case 3 : {
+  			Serial.print("Turning left HARD");
+  			Serial.print(", ");
+  			Serial.print(path);
+  			Serial.print(", error: ");
+  			error = 3;
+  			Serial.println(error);
+  			break;
+  		}
 
-    case 6 : {
-      Serial.println("Turning right HARD");
-      error = -3;
-      break;
-    }
+  		case 4 : {
+  			Serial.print("Turning left VERY HARD");
+  			Serial.print(", ");
+  			Serial.print(path);
+  			Serial.print(", error: ");
+  			error = 4;
+  			Serial.println(error);
+  			break;
+  		}
 
-    case 7 : {
-      Serial.println("Turning right VERY HARD");
-      error = -4;
-      break;
-    }
+  		case 5 : {
+  			Serial.print("Turning right SOFT");
+  			Serial.print(", ");
+  			Serial.print(path);
+  			Serial.print(", error: ");
+  			error = -1;
+  			Serial.println(error);
+  			break;
+  		}
 
-    case 8 : {
-      Serial.println("Turning left VERY SOFT");
-      error = 0;
-      break;
-    }
+  		case 6 : {
+  			Serial.print("Turning right HARD");
+  			Serial.print(", ");
+  			Serial.print(path);
+  			Serial.print(", error: ");
+  			error = -3;
+  			Serial.println(error);
+  			break;
+  		}
 
-    case 9: {
-      Serial.println("Turning right VERY SOFT");
-      error = 0;
-      break;
-    }
+  		case 7 : {
+  			Serial.print("Turning right VERY HARD");
+  			Serial.print(", ");
+  			Serial.print(path);
+  			Serial.print(", error: ");
+  			error = -4;
+  			Serial.println(error);
+  			break;
+  		}
 
-    case 10: {
-      Serial.println("case 10");
-      error = 0;
-      break;
-    }
+  		case 8 : {
+  			Serial.print("Turning left VERY SOFT");
+  			Serial.print(", ");
+  			Serial.print(path);
+  			Serial.print(", error: ");
+  			error = 0;
+  			Serial.println(error);
+  			break;
+  		}
 
-    case 11 : {
-      Serial.println("case 11");
-      error = 0;
-      break;
-    }
+  		case 9: {
+  			Serial.print("Turning right VERY SOFT");
+  			Serial.print(", ");
+  			Serial.print(path);
+  			Serial.print(", error: ");
+  			error = 0;
+  			Serial.println(error);
+  			break;
+  		}
 
-    case 12:  {
-      Serial.println("case 12");
-      error = 0;
-      break;
-    }
+  		case 10: {
+  			Serial.print("case 10");
+  			Serial.print(", ");
+  			Serial.print(path);
+  			Serial.print(", error: ");
+  			error = 0;
+  			Serial.println(error);
+  			break;
+  		}
 
-    case 13:{
-      Serial.println("case 13");
-      error = 0;
-      break;
-    }
+  		case 11 : {
+  			Serial.print("case 11");
+  			Serial.print(", ");
+  			Serial.print(path);
+  			Serial.print(", error: ");
+  			error = 0;
+  			Serial.println(error);
+  			break;
+  		}
 
-    case 14:{
-      Serial.println("case 14");
-      error = 0;
-      break;
-    }
+  		case 12:  {
+  			Serial.print("case 12");
+  			Serial.print(", ");
+  			Serial.print(path);
+  			Serial.print(", error: ");
+  			error = 0;
+  			Serial.println(error);
+  			break;
+  		}
 
-    case 15:{
-      Serial.println("case 15");
-      error =0 ;
-      break;
-    }
+  		case 13:{
+  			Serial.print("case 13");
+  			Serial.print(", ");
+  			Serial.print(path);
+  			Serial.print(", error: ");
+  			error = 0;
+  			Serial.println(error);
+  			break;
+  		}
 
-    case 16:{
-      Serial.println("case 16");
-      error = 0;
-      break;
-    }
+  		case 14:{
+  			Serial.print("case 14");
+  			Serial.print(", ");
+  			Serial.print(path);
+  			Serial.print(", error: ");
+  			error = 0;
+  			Serial.println(error);
+  			break;
+  		}
 
-    default:  break;
+  		case 15:{
+  			Serial.print("case 15");
+  			Serial.print(", ");
+  			Serial.print(path);
+  			Serial.print(", error: ");
+  			error =0 ;
+  			Serial.println(error);
+  			break;
+  		}
+
+  		case 16:{
+  			Serial.print("case 16");
+  			Serial.print(", ");
+  			Serial.print(path);
+  			Serial.print(", error: ");
+  			error = 0;
+  			Serial.println(error);
+  			break;
+  		}
+
+  		default:  break;
+  	}
+  	return error;
   }
-  return error;
-}
+
+  uint8_t motorspeed(uint8_t motorSpeed){
+  	if (motorSpeed >= 255) return 255;
+  	else return	motorSpeed;
+  }
