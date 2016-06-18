@@ -24,26 +24,26 @@ bool check_obstacle(float dist_obs){
   Sulla base dei valori ricevuti dai sensori si ottengono i seguenti casi:
 
                                    (X=nero; O=bianco)
-                          DX  SX        SX DX        
-  GO_FORWARD           ==  1 , 2       O X X O
-  TURN_LEFT_VERY_SOFT  ==  3 , 2       O X O O
-  TURN_LEFT_SOFT       ==  1 , 0       X X X O
-  TURN_LEFT_HARD       ==  3 , 0       X X O O
-  TURN_LEFT_VERYHARD   ==  3 , 1       X O O O
-  TURN_RIGHT_VERY_SOFT ==  1 , 3       O O X O
-  TURN_RIGHT_SOFT      ==  0 , 2       O X X X
-  TURN_RIGHT_HARD      ==  0 , 3       O O X X
-  TURN_RIGHT_VERYHARD  ==  2 , 3       O O O X
-  NO_LINE              ==  3 , 3       O O O O
-  EXCEPTION1           ==  2 , 0       X X O X
-  EXCEPTION2           ==  0 , 1       X O X X
-  GO_FORWARD_bis       ==  2 , 1       X O O X          
-  CROSS                ==  0 , 0       X X X X    
-  EXCEPTION3     	     ==  2 , 2	     O X O X
-  EXCEPTION4           ==  1 , 1       X O X O
+                          DX  SX        SX  DX        
+  GO_FORWARD           ==  1 , 2       O X  X O
+  TURN_LEFT_VERY_SOFT  ==  3 , 2       O X  O O
+  TURN_LEFT_SOFT       ==  1 , 0       X X  X O
+  TURN_LEFT_HARD       ==  3 , 0       X X  O O
+  TURN_LEFT_VERYHARD   ==  3 , 1       X O  O O
+  TURN_RIGHT_VERY_SOFT ==  1 , 3       O O  X O
+  TURN_RIGHT_SOFT      ==  0 , 2       O X  X X
+  TURN_RIGHT_HARD      ==  0 , 3       O O  X X
+  TURN_RIGHT_VERYHARD  ==  2 , 3       O O  O X
+  NO_LINE              ==  3 , 3       O O  O O
+  EXCEPTION1           ==  2 , 0       X X  O X
+  EXCEPTION2           ==  0 , 1       X O  X X
+  GO_FORWARD_bis       ==  2 , 1       X O  O X          
+  CROSS                ==  0 , 0       X X  X X    
+  EXCEPTION3     	     ==  2 , 2	     O X  O X
+  EXCEPTION4           ==  1 , 1       X O  X O
 */
 
-int read_path(int sensorStateDX, int sensorStateSX){
+int read_path(int DX, int SX){
   int input_path = 0;
   
   if(sensorStateDX == 1 && sensorStateSX == 2){

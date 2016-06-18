@@ -2,6 +2,10 @@
 #include "finite_state_machine.h"
 #include "functioncontrol.h"
 
+//velocità motore massime
+#define motorSpeedMAX   255
+#define motorSpeedMIN  -255
+
 MeLineFollower lineFinderDX(PORT_3); /* Line Finder module can only be connected to PORT_3, PORT_4, PORT_5, PORT_6 of base shield. */
 MeLineFollower lineFinderSX(PORT_4);
 
@@ -24,10 +28,6 @@ MeDCMotor motorSX(PORT_2);  // value: between -255 and 255.
 
 //immplementatizone macchina a stati finiti
   FiniteStateMachine stateMachine = FiniteStateMachine(&Init);
-
-//velocità motore massime
-#define motorSpeedMAX   255
-#define motorSpeedMIN  -255
 
 void setup()
 {
@@ -53,6 +53,8 @@ void start() {
   stateMachine.transitionTo(&Idle);
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 void line_follower(){
   Serial.println("Stato Line_Follower");
 
@@ -62,19 +64,16 @@ void line_follower(){
   float dist_obs = ultraSensor.distanceCm();
 
   //verifica costantemente se ci sono oggetti sul percorso e segue la linea se ci sono ostacoli torna in Idle
-  if (check_obstacle (dist_obs) == true){
+  while (check_obstacle (dist_obs) == true){
     //lettura posizione dai sensori di linea
     int error = path_error(read_path(lineFinderDX.readSensors(), lineFinderSX.readSensors()));
-    while (error >= 0){
-      speed_control(motorSpeed - PIDvalue(error));
-      motorDX.run(- motorSpeed);
-      motorSX.run(  motorSpeed);
-    }
+    speed_control(motorSpeed - PIDvalue(error));
+    motorDX.run(- motorSpeed);
+    motorSX.run(  motorSpeed);
   }
-  else {
-    Serial.println("ostacoli sul percorso");
-    stateMachine.transitionTo(&Idle);
-  }
+
+  Serial.println("ostacoli sul percorso");
+  stateMachine.transitionTo(&Idle);
 }
 
 void stop(){
