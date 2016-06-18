@@ -19,184 +19,216 @@
   TURN_RIGHT_SOFT      ==  0 , 2       O X X X        -2
   TURN_RIGHT_HARD      ==  0 , 3       O O X X        -3
   TURN_RIGHT_VERYHARD  ==  2 , 3       O O O X        -4
-  NO_LINE              ==  3 , 3       O O O O        100    per ora con 100 sto ad indicare di andare in spirale
-  EXCEPTION1           ==  2 , 0       X X O X         1 
-  EXCEPTION2           ==  0 , 1       X O X X        -1  
+  NO_LINE              ==  3 , 3       O O O O         0  per ora con 100 sto ad indicare di andare in spirale
+  EXCEPTION1           ==  2 , 0       X X O X         0
+  EXCEPTION2           ==  0 , 1       X O X X         0 
   GO_FORWARD_bis       ==  2 , 1       X O O X         0    (line = white & background = black) 
   CROSS                ==  0 , 0       X X X X         0     per ora lo faccio andare dritto
   EXCEPTION3     	  	 ==  2 , 2	   	 O X O X         0     quando trova questo caso strano per ora va dritto
   EXCEPTION4           ==  1 , 1       X O X O         0     quando trova questo caso strano per ora va dritto
 */
-  int path_error(int path){
-  	int error;
-  	switch(path)
-  	{
-  		case 1 : {
-  			Serial.print("GO_FORWARD");
-  			Serial.print(", ");
-  			Serial.print(path);
-  			Serial.print(", error: ");
-  			error = 0;
-  			Serial.println(error);
-  			break;
-  		}
+  
+int path_error(int path){
+  int error;
+  switch(path){
+    case 1:{
+      //attribusico l'errore da calcolare poi nella funzione PID
+      error = 0;
+      //stampa sulla seriale per debugging
+      Serial.print("GO_FORWARD");
+      Serial.print(", ");
+      Serial.print(path);
+      Serial.print(", error: ");
+      Serial.println(error);
+      break;
+    }
+    
+    case 2:{
+      //attribusico l'errore da calcolare poi nella funzione PID
+      error = 1;
+      //stampa sulla seriale per debugging
+      Serial.print("TURN_LEFT_VERY_SOFT");
+      Serial.print(", ");
+      Serial.print(path);
+      Serial.print(", error: ");
+      Serial.println(error);
+      break;
+    }
 
-  		case 2 : {
-  			Serial.print("Turning left SOFT");
-  			Serial.print(", ");
-  			Serial.print(path);
-  			Serial.print(", error: ");
-  			error = 2;
-  			Serial.println(error);
-  			break;
-  		}
+    case 3 :{
+      //attribusico l'errore da calcolare poi nella funzione PID
+      error = 2;
+      //stampa sulla seriale per debugging
+      Serial.print("TURN_LEFT_SOFT ");
+      Serial.print(", ");
+      Serial.print(path);
+      Serial.print(", error: ");
+      Serial.println(error);
+      break;
+    }
 
-  		case 3 : {
-  			Serial.print("Turning left HARD");
-  			Serial.print(", ");
-  			Serial.print(path);
-  			Serial.print(", error: ");
-  			error = 3;
-  			Serial.println(error);
-  			break;
-  		}
+    case 4:{
+      //attribusico l'errore da calcolare poi nella funzione PID
+      error = 3;
+      //stampa sulla seriale per debugging
+      Serial.print("TURN_LEFT_HARD");
+      Serial.print(", ");
+      Serial.print(path);
+      Serial.print(", error: ");
+      Serial.println(error);
+      break;
+    }
 
-  		case 4 : {
-  			Serial.print("Turning left VERY HARD");
-  			Serial.print(", ");
-  			Serial.print(path);
-  			Serial.print(", error: ");
-  			error = 4;
-  			Serial.println(error);
-  			break;
-  		}
+    case 5:{
+      //attribusico l'errore da calcolare poi nella funzione PID
+      error = 4;
+      //stampa sulla seriale per debugging
+      Serial.print("TURN_LEFT_VERYHARD");
+      Serial.print(", ");
+      Serial.print(path);
+      Serial.print(", error: ");
+      Serial.println(error);
+      break;
+    }
 
-  		case 5 : {
-  			Serial.print("Turning right SOFT");
-  			Serial.print(", ");
-  			Serial.print(path);
-  			Serial.print(", error: ");
-  			error = -1;
-  			Serial.println(error);
-  			break;
-  		}
+    case 6:{
+      //attribusico l'errore da calcolare poi nella funzione PID
+      error = -1;
+      //stampa sulla seriale per debugging
+      Serial.print("TURN_RIGHT_VERY_SOFT");
+      Serial.print(", ");
+      Serial.print(path);
+      Serial.print(", error: ");
+      Serial.println(error);
+      break;
+    }
 
-  		case 6 : {
-  			Serial.print("Turning right HARD");
-  			Serial.print(", ");
-  			Serial.print(path);
-  			Serial.print(", error: ");
-  			error = -3;
-  			Serial.println(error);
-  			break;
-  		}
+    case 7:{
+      //attribusico l'errore da calcolare poi nella funzione PID
+      error = -2;
+      //stampa sulla seriale per debugging
+      Serial.print("TURN_RIGHT_SOFT");
+      Serial.print(", ");
+      Serial.print(path);
+      Serial.print(", error: ");
+      Serial.println(error);
+      break;
+    }
 
-  		case 7 : {
-  			Serial.print("Turning right VERY HARD");
-  			Serial.print(", ");
-  			Serial.print(path);
-  			Serial.print(", error: ");
-  			error = -4;
-  			Serial.println(error);
-  			break;
-  		}
+    case 8:{
+      //attribusico l'errore da calcolare poi nella funzione PID
+      error = -3;
+      //stampa sulla seriale per debugging
+        Serial.print("TURN_RIGHT_HARD");
+      Serial.print(", ");
+      Serial.print(path);
+      Serial.print(", error: ");
+      Serial.println(error);
+      break;
+    }
 
-  		case 8 : {
-  			Serial.print("Turning left VERY SOFT");
-  			Serial.print(", ");
-  			Serial.print(path);
-  			Serial.print(", error: ");
-  			error = 0;
-  			Serial.println(error);
-  			break;
-  		}
+    case 9:{
+      //attribusico l'errore da calcolare poi nella funzione PID
+      error = -4;
+      //stampa sulla seriale per debugging
+      Serial.print("TURN_RIGHT_VERYHARD");
+      Serial.print(", ");
+      Serial.print(path);
+      Serial.print(", error: ");
+      Serial.println(error);
+      break;
+    }
 
-  		case 9: {
-  			Serial.print("Turning right VERY SOFT");
-  			Serial.print(", ");
-  			Serial.print(path);
-  			Serial.print(", error: ");
-  			error = 0;
-  			Serial.println(error);
-  			break;
-  		}
+    case 10:{
+      //attribusico l'errore da calcolare poi nella funzione PID
+      error = 0;
+      //stampa sulla seriale per debugging
+      Serial.print("case 10");
+      Serial.print(", ");
+      Serial.print(path);
+      Serial.print(", error: ");
+      Serial.println(error);
+      break;
+    }
 
-  		case 10: {
-  			Serial.print("case 10");
-  			Serial.print(", ");
-  			Serial.print(path);
-  			Serial.print(", error: ");
-  			error = 0;
-  			Serial.println(error);
-  			break;
-  		}
+    case 11:{
+      //attribusico l'errore da calcolare poi nella funzione PID
+      error = 0;
+      //stampa sulla seriale per debugging
+      Serial.print("case 11");
+      Serial.print(", ");
+      Serial.print(path);
+      Serial.print(", error: ");
+      Serial.println(error);
+      break;
+    }
 
-  		case 11 : {
-  			Serial.print("case 11");
-  			Serial.print(", ");
-  			Serial.print(path);
-  			Serial.print(", error: ");
-  			error = 0;
-  			Serial.println(error);
-  			break;
-  		}
+    case 12:{
+      //attribusico l'errore da calcolare poi nella funzione PID
+      error = 0;
+      //stampa sulla seriale per debugging
+      Serial.print("case 12");
+      Serial.print(", ");
+      Serial.print(path);
+      Serial.print(", error: ");
+      Serial.println(error);
+      break;
+    }
 
-  		case 12:  {
-  			Serial.print("case 12");
-  			Serial.print(", ");
-  			Serial.print(path);
-  			Serial.print(", error: ");
-  			error = 0;
-  			Serial.println(error);
-  			break;
-  		}
+    case 13:{
+      //attribusico l'errore da calcolare poi nella funzione PID
+      error = 0;
+      //stampa sulla seriale per debugging
+      Serial.print("case 13");
+      Serial.print(", ");
+      Serial.print(path);
+      Serial.print(", error: ");
+      Serial.println(error);
+      break;
+    }
 
-  		case 13:{
-  			Serial.print("case 13");
-  			Serial.print(", ");
-  			Serial.print(path);
-  			Serial.print(", error: ");
-  			error = 0;
-  			Serial.println(error);
-  			break;
-  		}
+    case 14:{
+      //attribusico l'errore da calcolare poi nella funzione PID
+      error = 0;
+      //stampa sulla seriale per debugging
+      Serial.print("case 14");
+      Serial.print(", ");
+      Serial.print(path);
+      Serial.print(", error: ");
+      Serial.println(error);
+      break;
+    }
 
-  		case 14:{
-  			Serial.print("case 14");
-  			Serial.print(", ");
-  			Serial.print(path);
-  			Serial.print(", error: ");
-  			error = 0;
-  			Serial.println(error);
-  			break;
-  		}
+    case 15:{
+      //attribusico l'errore da calcolare poi nella funzione PID
+      error =0 ;
+      //stampa sulla seriale per debugging
+      Serial.print("case 15");
+      Serial.print(", ");
+      Serial.print(path);
+      Serial.print(", error: ");
+      Serial.println(error);
+      break;
+    }
 
-  		case 15:{
-  			Serial.print("case 15");
-  			Serial.print(", ");
-  			Serial.print(path);
-  			Serial.print(", error: ");
-  			error =0 ;
-  			Serial.println(error);
-  			break;
-  		}
+    case 16:{
+      //attribusico l'errore da calcolare poi nella funzione PID
+      error = 0;
+      //stampa sulla seriale per debugging
+      Serial.print("case 16");
+      Serial.print(", ");
+      Serial.print(path);
+      Serial.print(", error: ");
+      Serial.println(error);
+      break;
+    }
 
-  		case 16:{
-  			Serial.print("case 16");
-  			Serial.print(", ");
-  			Serial.print(path);
-  			Serial.print(", error: ");
-  			error = 0;
-  			Serial.println(error);
-  			break;
-  		}
-
-  		default:  break;
-  	}
-  	return error;
+    default: exit; break;
   }
+  return error;
+}
 
-  uint8_t motorspeed(uint8_t motorSpeed){
-  	if (motorSpeed >= 255) return 255;
-  	else return	motorSpeed;
-  }
+uint8_t speed_control(uint8_t motorSpeed){
+  if (motorSpeed >= 255) return 255;
+  else return	motorSpeed;
+}

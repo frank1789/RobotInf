@@ -1,25 +1,21 @@
 #include "pid.h"
 
-float Kp=50;
-float Ki=0;
-float Kd=0;
+uint8_t PIDvalue(int e){
+	uint8_t Kp =	50;
+	uint8_t Ki =	 0;
+	uint8_t Kd =	 0;
 
-int e=0;
-int P=0;
-int I=0;
-int D=0;
-int PIDvalue=0;
-float previousError=0;
-float previousI=0;
+	uint8_t P =	0;
+	uint8_t I =	0;
+	uint8_t D = 0;
+	uint8_t previousError = 0;
+	uint8_t previousI = 0;
 
-uint8_t calculatePID(int e)
-{
-  P = e;
+	P = e;
   I = I + e;
-  D = e-previousError;
-  PIDvalue = (Kp*P) + (Ki*I) + (Kd*D);
+  D = e - previousError;
   previousError = e;
   
-  return PIDvalue;
+  return (Kp*P) + (Ki*I) + (Kd*D);
 }
 

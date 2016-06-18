@@ -39,7 +39,7 @@ bool check_obstacle(float dist_obs){
   EXCEPTION2           ==  0 , 1       X O X X
   GO_FORWARD_bis       ==  2 , 1       X O O X          
   CROSS                ==  0 , 0       X X X X    
-  EXCEPTION3     	   ==  2 , 2	   O X O X
+  EXCEPTION3     	     ==  2 , 2	     O X O X
   EXCEPTION4           ==  1 , 1       X O X O
 */
 

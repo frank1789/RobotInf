@@ -1,10 +1,6 @@
 #include "MeOrion.h"
-
-#include <Arduino.h>
-#include <SoftwareSerial.h>
 #include "finite_state_machine.h"
 #include "functioncontrol.h"
-#include "pid.h"
 
 MeLineFollower lineFinderDX(PORT_3); /* Line Finder module can only be connected to PORT_3, PORT_4, PORT_5, PORT_6 of base shield. */
 MeLineFollower lineFinderSX(PORT_4);
@@ -30,8 +26,8 @@ MeDCMotor motorSX(PORT_2);  // value: between -255 and 255.
   FiniteStateMachine stateMachine = FiniteStateMachine(&Init);
 
 //velocità motore massime
-  uint8_t const motorSpeedMAX =  255;
-  uint8_t const motorSpeedMIN = -255;
+#define motorSpeedMAX   255
+#define motorSpeedMIN  -255
 
 void setup()
 {
@@ -54,30 +50,26 @@ void idle () {
 }
 
 void start() {
-
-	stateMachine.transitionTo(&Idle);
-	
+  stateMachine.transitionTo(&Idle);
 }
 
 void line_follower(){
   Serial.println("Stato Line_Follower");
 
   uint8_t motorSpeed = 40;
-  
-  //lettura posizione dai sensori di linea
-  int sensorStateDX = lineFinderDX.readSensors();
-  int sensorStateSX = lineFinderSX.readSensors();
-  
+
   //lettura dal sensore a ultrasuoni
   float dist_obs = ultraSensor.distanceCm();
 
   //verifica costantemente se ci sono oggetti sul percorso e segue la linea se ci sono ostacoli torna in Idle
   if (check_obstacle (dist_obs) == true){
-    int path  = read_path(sensorStateDX, sensorStateSX);
-    int error = path_error(path);
-    motorSpeed = motorSpeed - calculatePID(error);
-    motorDX.run(-motorspeed(motorSpeed));
-    motorSX.run( motorspeed(motorSpeed));
+    //lettura posizione dai sensori di linea
+    int error = path_error(read_path(lineFinderDX.readSensors(), lineFinderSX.readSensors()));
+    while (error >= 0){
+      speed_control(motorSpeed - PIDvalue(error));
+      motorDX.run(- motorSpeed);
+      motorSX.run(  motorSpeed);
+    }
   }
   else {
     Serial.println("ostacoli sul percorso");
