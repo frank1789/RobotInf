@@ -43,7 +43,7 @@ bool check_obstacle(float dist_obs){
   EXCEPTION4           ==  1 , 1       X O  X O
 */
 
-int read_path(int DX, int SX){
+int read_path(int sensorStateDX, int sensorStateSX){
   int input_path = 0;
   
   if(sensorStateDX == 1 && sensorStateSX == 2){
