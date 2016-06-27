@@ -58,7 +58,7 @@ void start() {
 void line_follower(){
   Serial.println("Stato Line_Follower");
 
-  uint8_t motorSpeed = 120;
+  uint8_t motorSpeed = 80;
 
   //lettura dal sensore a ultrasuoni
   float dist_obs = ultraSensor.distanceCm();
@@ -67,14 +67,41 @@ void line_follower(){
   if (check_obstacle (dist_obs) == true){
     //lettura posizione dai sensori di linea
     int error = path_error(read_path(lineFinderDX.readSensors(), lineFinderSX.readSensors()));
-    int correction= 10 * error + 6 * (error - last_error);
-    last_error = error;
-    motorDX.run(-motorSpeed - correction);
-    motorSX.run( motorSpeed - correction);
+    if (error >= -4 && error <= 4)
+    {
+      int correction= 8 * error + 4 * (error - last_error);
+      last_error = error;
+      motorDX.run(-motorSpeed - correction);
+      motorSX.run( motorSpeed - correction);
+    }
+    else if(error == 5)
+    {
+      stop();
+      
+      motorDX.run(motorSpeed);
+      motorSX.run(motorSpeed);
+    }
+    else if (error == 6)
+    {
+      //stop();
+      if(crossbreed() == 1){
+        motorDX.run(motorSpeed);
+        //motorSX.run(motorSpeed);
+      }
+      else
+      {
+        //motorDX.run(-motorSpeed);
+        motorSX.run(-motorSpeed);
+      }
+
+    }
   }
-else{
-  Serial.println("ostacoli sul percorso");
-  stateMachine.transitionTo(&Idle);
+else
+{
+  stop();
+      
+      motorDX.run(motorSpeed);
+      motorSX.run(motorSpeed);
 	}
 }
 
