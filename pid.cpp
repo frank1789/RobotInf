@@ -7,7 +7,7 @@ uint8_t calculatePID(int e)
 	float Ki=0;
 	float Kd=0;
 
-	int e=0;
+	//int e=0;
 	int P=0;
 	int I=0;
 	int D=0;

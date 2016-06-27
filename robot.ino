@@ -72,94 +72,93 @@ void line_follower()
     //motorSX.run(  motorSpeed);
         switch(read_path(lineFinderDX.readSensors(), lineFinderSX.readSensors()))
         {
-            {
-                case 1 : 
-                Serial.println("GO_FORWARD");
-                motorDX.run(-motorSpeed);
-                motorSX.run( motorSpeed);
-                break;
+            case 1 : 
+            Serial.println("GO_FORWARD");
+            motorDX.run(-motorSpeed);
+            motorSX.run( motorSpeed);
+            break;
 
-                case 2 : 
-                Serial.println("TURN_LEFT_VERY_SOFT");
-                motorDX.run(-motorSpeed - (motorSpeed * 0.20));
-                motorSX.run( motorSpeed - (motorSpeed * 0.20));
-                break;
+            case 2 : 
+            Serial.println("TURN_LEFT_VERY_SOFT");
+            motorDX.run(-motorSpeed - (motorSpeed * 0.20));
+            motorSX.run( motorSpeed - (motorSpeed * 0.20));
+            break;
 
-                case 3 : 
-                Serial.println("TURN_LEFT_SOFT");
-                motorDX.run(-motorSpeed - (motorSpeed * 0.30));
-                motorSX.run( motorSpeed - (motorSpeed * 0.30));
+            case 3 : 
+            Serial.println("TURN_LEFT_SOFT");
+            motorDX.run(-motorSpeed - (motorSpeed * 0.30));
+            motorSX.run( motorSpeed - (motorSpeed * 0.30));
 
-                break;
+            break;
 
-                case 4 : 
-                Serial.println("TURN_LEFT_HARD");
-                motorDX.run(-motorSpeed - (motorSpeed * 0.40));
-                motorSX.run( motorSpeed - (motorSpeed * 0.40));
+            case 4 : 
+            Serial.println("TURN_LEFT_HARD");
+            motorDX.run(-motorSpeed - (motorSpeed * 0.40));
+            motorSX.run( motorSpeed - (motorSpeed * 0.40));
 
-                break;
+            break;
 
-                case 5 : 
-                Serial.println("TURN_LEFT_VERYHARD");
-                motorDX.run(-motorSpeed + (motorSpeed * 0.50));
-                motorSX.run( motorSpeed + (motorSpeed * 0.50));
+            case 5 : 
+            Serial.println("TURN_LEFT_VERYHARD");
+            motorDX.run(-motorSpeed + (motorSpeed * 0.50));
+            motorSX.run( motorSpeed + (motorSpeed * 0.50));
 
-                break;
+            break;
 
-                case 6 : 
-                Serial.println("TURN_RIGHT_VERY_SOFT");
-                motorDX.run(-motorSpeed + (motorSpeed * 0.20));
-                motorSX.run( motorSpeed + (motorSpeed * 0.20));
+            case 6 : 
+            Serial.println("TURN_RIGHT_VERY_SOFT");
+            motorDX.run(-motorSpeed + (motorSpeed * 0.20));
+            motorSX.run( motorSpeed + (motorSpeed * 0.20));
 
-                break;
+            break;
 
-                case 7 : 
-                Serial.println("TURN_RIGHT_SOFT");
-                motorDX.run(-motorSpeed + (motorSpeed * 0.30));
-                motorSX.run( motorSpeed + (motorSpeed * 0.30));
+            case 7 : 
+            Serial.println("TURN_RIGHT_SOFT");
+            motorDX.run(-motorSpeed + (motorSpeed * 0.30));
+            motorSX.run( motorSpeed + (motorSpeed * 0.30));
 
-                break;
+            break;
 
-                case 8 : 
-                Serial.println("TURN_RIGHT_HARD");
-                motorDX.run(-motorSpeed - (motorSpeed * 0.40));
-                motorSX.run( motorSpeed - (motorSpeed * 0.40));
-                break;
+            case 8 : 
+            Serial.println("TURN_RIGHT_HARD");
+            motorDX.run(-motorSpeed - (motorSpeed * 0.40));
+            motorSX.run( motorSpeed - (motorSpeed * 0.40));
+            break;
 
-                case 9:
-                Serial.println("TURN_RIGHT_VERYHARD");
-                motorDX.run(-motorSpeed + (motorSpeed * 0.50));
-                motorSX.run( motorSpeed + (motorSpeed * 0.50));
-                break;
+            case 9:
+            Serial.println("TURN_RIGHT_VERYHARD");
+            motorDX.run(-motorSpeed + (motorSpeed * 0.50));
+            motorSX.run( motorSpeed + (motorSpeed * 0.50));
+            break;
 
-                case 10:
-                Serial.println("NO_LINE");
-                motorDX.stop();
-                motorSX.stop();
-                break;
+            case 10:
+            Serial.println("NO_LINE");
+            motorDX.stop();
+            motorSX.stop();
+            break;
 
-                case 11:
-                break;
+            case 11:
+            break;
 
-                case 12:
-                break;
+            case 12:
+            break;
 
-                case 13:
-                break;
+            case 13:
+            break;
 
-                case 14:
-                break;
+            case 14:
+            break;
 
-                case 15:
-                break;
+            case 15:
+            break;
 
-                case 16:
-                break;
+            case 16:
+            break;
 
-                default: 
-                break;
-            }
+            default: 
+            break;
         }
+    } 
     else
     {
     Serial.println("ostacoli sul percorso");
@@ -169,7 +168,7 @@ void line_follower()
 
 void stop()
 {
-	Serial.println("Stato STOP");
-  motorDX.stop();
-  motorSX.stop();
+    Serial.println("Stato STOP");
+    motorDX.stop();
+    motorSX.stop();
 }
