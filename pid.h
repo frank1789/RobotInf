@@ -3,6 +3,6 @@
 #include <Arduino.h>
 
 //calcolo del PID
-uint8_t PIDvalue(int e);
+uint8_t calculatePID(int e);
 
 #endif

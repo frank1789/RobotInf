@@ -5,9 +5,6 @@
 #include <Wire.h>
 
 
-MeBluetooth bluetooth(PORT_5);
-
-
 
 
 #endif
