@@ -3,7 +3,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % === Impostazione del documento ==========================
-\documentclass[12pt,a4paper,twoside,english,italian,hidelinks]{book}
+\documentclass[12pt,a4paper,oneside,english,italian,hidelinks]{book}
 \pagenumbering{arabic}
 \usepackage{setspace}
 \onehalfspace
@@ -55,6 +55,23 @@
 \usepackage{etoolbox}
 \patchcmd{\thebibliography}{\list}{\begin{multicols}{2}\smaller\list}{}{}
 \appto{\endthebibliography}{\end{multicols}}
+%==Per le figure latex======================================
+%Package e librerie per TikZ e PGF, le librerie non sono tutte necessarie a questo documento LATEX.
+     \usepackage{tikz,fp,ifthen,fullpage}
+     \usepackage{pgfmath}
+     \usetikzlibrary{backgrounds}
+     \usetikzlibrary{decorations.pathmorphing,backgrounds,fit,calc,through}
+     \usetikzlibrary{arrows}
+     \usetikzlibrary{automata}
+     \usetikzlibrary{shapes,decorations,shadows}
+     %\usetikzlibrary{shapes.scopes}
+     \usetikzlibrary{fadings}
+     \usetikzlibrary{patterns}
+     \usetikzlibrary{mindmap}
+     \usetikzlibrary{decorations.text}
+     \usetikzlibrary{decorations.shapes}
+      \usepackage{pgfplots}
+\pgfplotsset{compat=1.13}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -75,6 +92,7 @@
 	\pagestyle{plain}
 	\input{introduzione}
 	\input{start}
+	\input{fran}
 	% Inserite qui gli altri capitoli:
 	%\input{miocapitolo1}
 	%\input{miocapitolo2}

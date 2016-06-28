@@ -1,0 +1,76 @@
+
+\begin{tikzpicture}[->, >=stealth', shorten >=1pt, auto, node distance=2.8cm, semithick]
+%====Definizione colori 	 paticolari===============================================================
+	\definecolor{royalblue}{cmyk}{1,0.50,0,0}
+  	\definecolor{cerulean}{cmyk}{0.94,0.11,0,0}
+	\definecolor{violet}{cmyk}{0.79,0.88,0,0}
+%====Definizione stile stati===============================================================
+	\tikzstyle {state1}=[circle, top color=white, bottom color=orange!40, draw, violet, minimum width=1cm]
+	\tikzstyle{state2}=[circle, top color=white, bottom color=cerulean!40, draw, royalblue, minimum width=1cm]
+%  \node[initial,state] (A)                    {$init$};
+%  \node[state]         (B) [above right of=A] {$idle$};
+%  \node[state]         (D) [below right of=A]  {$line follower$};
+%  \node[state]         (C) [below right of=B]  {$stop$};
+%  \node[state]         (E) [below of=D]        {$q_e$};
+%  \node[state]			(F)[ right of=B]{$start$};
+%====Definizione stati e posizione===============================================================
+	\node[initial,state1] 	(A)                    		{$init$};
+ 	\node[state2]          	(B) [right of=A]		{$START$};
+ 	\node[state1]		   		(C) [right of=B]		{$IDLE$};
+  	\node[state2]         	(D) [right of=C]  		{$line follower$};
+  	\node[state1]          	(E) [below of=C]  	{$stop$};
+%  \path (A) 	edge             			 node {0,1,L} (B)
+%            		edge              			node {1,1,R} (C)
+%        	(B) 	edge [loop above] 	node {1,1,L} (B)
+%            		edge              			node {0,1,L} (C)
+%        	(C)	 edge              			node {0,1,L} (D)
+%            		edge [bend left]  		node {1,0,R} (E)
+%        	(D) 	edge [loop below] 	node {1,1,R} (D)
+%            		edge              			node {0,1,R} (A)
+%       		(E) 	edge [bend left]  		node {1,0,R} (A)
+%       		(F)	edge												 (D);
+%====Definizione collegamenti e stile frecce===============================================================
+      			 %from     stile                      scritte       	to		
+      \path 	(A)		edge	[right]									(B)
+      				(B)		edge												(C)
+      				(C)		edge												(D)
+      				(D)		edge	[bend left]							(E)
+      				(D)		edge[bend right]							(C)
+      				(E)		edge[bend left]							(C);    
+\end{tikzpicture}
+
+
+
+    
+\begin{tikzpicture}[->, >=stealth', shorten >=1pt, auto, node distance=2.8cm, semithick]
+ % Define block styles
+	\tikzstyle{decision} = [diamond, draw, fill=blue!20, text width=4.5em, text badly centered, node distance=3cm, inner sep=0pt]
+\tikzstyle{block} = [rectangle, draw, fill=blue!20, text width=5em, text centered, rounded corners,  minimum height=4em]
+%	\tikzstyle{line} = [draw, -latex']
+	\tikzstyle{input/output} =[trapezium, draw, minimum width=3cm,
+trapezium left angle=60, trapezium right angle=120]
+	\tikzstyle{start/stop} = [draw, ellipse,fill=red!20, node distance=3cm, minimum height=2em]
+%%====Definizione stati e posizione===============================================================
+	\node	[start/stop]		(start)										{start};
+	\node	[input/output]	(sensori)	[below of= start]		{prova};
+    \node 	[block] (init) 					[below of= sensori]	{initialize model};
+    \node	[block]	(test)					[below of= init]		{daje};
+    \node	[]()[]{};
+%   \node [cloud, left of=init] (expert) {expert};
+%    \node [cloud, right of=init] (system) {system};
+%    \node [block, below of=init] (identify) {identify candidate models};
+%    \node [block, below of=identify] (evaluate) {evaluate candidate models};
+%    \node [block, left of=evaluate, node distance=3cm] (update) {update model};
+%    \node [decision, below of=evaluate] (decide) {is best candidate better?};
+%    \node [block, below of=decide, node distance=3cm] (stop) {stop};
+%    % Draw edges
+%    \path [line] (init) -- (identify);
+%    \path [line] (identify) -- (evaluate);
+%    \path [line] (evaluate) -- (decide);
+%    \path [line] (decide) -| node [near start] {yes} (update);
+%    \path [line] (update) |- (identify);
+%    \path [line] (decide) -- node {no}(stop);
+%    \path [line,dashed] (expert) -- (init);
+%    \path [line,dashed] (system) -- (init);
+%    \path [line,dashed] (system) |- (evaluate);
+\end{tikzpicture}

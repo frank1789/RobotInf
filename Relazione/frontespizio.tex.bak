@@ -16,15 +16,14 @@
      \vspace{4em}
      {\LARGE\textbf{
      	Mobile robot\\\vspace{0.4em}
-     	La quantità di moto dello slittino
-     }}\\
+     }}
  \end{center}
 
 \vskip 2.0cm
   \begin{center}
     \begin{tabular}{c c c c c c c c}
-      Relatore & & & & & & & Candidato \\[0.2cm]
-      \large{Prof. Enrico Bertolazzi} & & & & & & & \large{Francesco Argentieri}\\[0.2cm]
+      Professore & & & & & & & Candidato \\[0.2cm]
+      \large{Enrico Bertolazzi} & & & & & & & \large{Francesco Argentieri}\\[0.2cm]
       & & & & & & & \large{Alessandro Luchetti}\\[0.2cm]
       & & & & & & & \large{Luca Nicolodi}\\    [0.2cm]
     \end{tabular}
