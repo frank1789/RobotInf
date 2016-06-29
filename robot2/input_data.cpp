@@ -23,8 +23,8 @@ bool check_obstacle(float dist_obs){
   robot rispetto alla linea da seguire (error = output - setpoint).
   Sulla base dei valori ricevuti dai sensori si ottengono i seguenti casi:
 
-                                   (X=nero; O=bianco)
-                          DX  SX        SX  DX        
+								   (X=nero; O=bianco)
+						  DX  SX        SX  DX        
   GO_FORWARD           ==  1 , 2       O X  X O
   TURN_LEFT_VERY_SOFT  ==  3 , 2       O X  O O
   TURN_LEFT_SOFT       ==  1 , 0       X X  X O
@@ -43,103 +43,120 @@ bool check_obstacle(float dist_obs){
   EXCEPTION4           ==  1 , 1       X O  X O
 */
 
-int read_path(int sensorStateDX, int sensorStateSX){
-  int input_path = 0;
+uint8_t read_path(uint8_t sensorStateDX, uint8_t sensorStateSX){
+  uint8_t input_path = 0;
   
-  if(sensorStateDX == 1 && sensorStateSX == 2){
-  	input_path = 1;
-  	Serial.print("sensor input, ");
-  	Serial.println(input_path);
-  }  //GO_FORWARD 
+	if(sensorStateDX == 1 && sensorStateSX == 2)
+	{
+		input_path = 1;
+		Serial.print("sensor input, ");
+		Serial.println(input_path);
+	}  //GO_FORWARD 
 
-  else if(sensorStateDX == 3 && sensorStateSX == 2){
-  	input_path = 2;
-  	Serial.print("sensor input, ");
-  	Serial.println(input_path);
-  }//TURN_LEFT_VERY_SOFT
+	else if(sensorStateDX == 3 && sensorStateSX == 2)
+  	{
+		input_path = 2;
+		Serial.print("sensor input, ");
+		Serial.println(input_path);
+	}//TURN_LEFT_VERY_SOFT
 
-  else if(sensorStateDX == 1 && sensorStateSX == 0){
-  	input_path = 3;
-  	Serial.print("sensor input, ");
-  	Serial.println(input_path);
-  }  //TURN_LEFT_SOFT
+  	else if(sensorStateDX == 1 && sensorStateSX == 0)
+  	{
+		input_path = 3;
+		Serial.print("sensor input, ");
+		Serial.println(input_path);
+	}  //TURN_LEFT_SOFT
   
-  else if(sensorStateDX == 3 && sensorStateSX == 0){
-    input_path = 4;
-    Serial.print("sensor input, ");
-    Serial.println(input_path);
-  }  //TURN_LEFT_HARD 
+  	else if(sensorStateDX == 3 && sensorStateSX == 0)
+  	{
+		input_path = 4;
+		Serial.print("sensor input, ");
+		Serial.println(input_path);
+	}  //TURN_LEFT_HARD 
   
-  else if(sensorStateDX == 3 &&  sensorStateSX == 1){
-    input_path = 5;
-    Serial.print("sensor input, ");
-    Serial.println(input_path);
-  }  //TURN_LEFT_VERYHARD
-    
-  else if(sensorStateDX == 1 && sensorStateSX == 3){
-    input_path = 6;
-    Serial.print("sensor input, ");
-    Serial.println(input_path);
-  }  //TURN_RIGHT_VERY_SOFT
+	else if(sensorStateDX == 3 &&  sensorStateSX == 1)
+	{
+		input_path = 5;
+		Serial.print("sensor input, ");
+		Serial.println(input_path);
+	}  //TURN_LEFT_VERYHARD
+	
+	else if(sensorStateDX == 1 && sensorStateSX == 3)
+  	{
+		input_path = 6;
+		Serial.print("sensor input, ");
+		Serial.println(input_path);
+	}  //TURN_RIGHT_VERY_SOFT
 
-  else if(sensorStateDX == 0 && sensorStateSX == 2){
-    input_path = 7;
-    Serial.print("sensor input, ");
-    Serial.println(input_path);
-    }  //TURN_RIGHT_SOFT
+	else if(sensorStateDX == 0 && sensorStateSX == 2)
+	{
+		input_path = 7;
+		Serial.print("sensor input, ");
+		Serial.println(input_path);
+	}  //TURN_RIGHT_SOFT
   
-  else if(sensorStateDX == 0 && sensorStateSX == 3){
-    input_path = 8;
-    Serial.print("sensor input, ");
-    Serial.println(input_path);
-  }  //TURN_RIGHT_HARD 
+	else if(sensorStateDX == 0 && sensorStateSX == 3)
+	{
+		input_path = 8;
+		Serial.print("sensor input, ");
+		Serial.println(input_path);
+	}  //TURN_RIGHT_HARD 
   
-  else if(sensorStateDX == 2 && sensorStateSX == 3){
-    input_path = 9;
-    Serial.print("sensor input, ");
-    Serial.println(input_path);
-  }  //TURN_RIGHT_VERYHARD
+	else if(sensorStateDX == 2 && sensorStateSX == 3)
+	{
+		input_path = 9;
+		Serial.print("sensor input, ");
+		Serial.println(input_path);
+	}  //TURN_RIGHT_VERYHARD
 
-  else if(sensorStateDX == 3 && sensorStateSX == 3){
-    input_path = 10;
-    Serial.print("sensor input, ");
-    Serial.println(input_path);
-  }  //NO_LINE
+  	else if(sensorStateDX == 3 && sensorStateSX == 3)
+	{
+		input_path = 10;
+		Serial.print("sensor input, ");
+		Serial.println(input_path);
+  	}  //NO_LINE
 
-   else if(sensorStateDX == 2 && sensorStateSX == 0){
-    input_path = 11;
-    Serial.print("sensor input, ");
-    Serial.println(input_path);
-  }  //EXCEPTION1
+   	else if(sensorStateDX == 2 && sensorStateSX == 0)
+   	{
+		input_path = 11;
+		Serial.print("sensor input, ");
+		Serial.println(input_path);
+  	}  //EXCEPTION1
 
-   else if(sensorStateDX == 0 && sensorStateSX == 1){
-    input_path = 12;
-    Serial.print("sensor input, ");
-    Serial.println(input_path);
-  }  //EXCEPTION2 
+   	else if(sensorStateDX == 0 && sensorStateSX == 1)
+   	{
+		input_path = 12;
+		Serial.print("sensor input, ");
+		Serial.println(input_path);
+  	}  //EXCEPTION2 
 
-   else if(sensorStateDX == 2 && sensorStateSX == 1){
-    input_path = 13;
-    Serial.print("sensor input, ");
-    Serial.println(input_path);
-  }  //GO_FORWARD_bis
+   	else if(sensorStateDX == 2 && sensorStateSX == 1)
+	{
+		input_path = 13;
+		Serial.print("sensor input, ");
+		Serial.println(input_path);
+	}  //GO_FORWARD_bis
 
-   else if(sensorStateDX == 0 && sensorStateSX == 0){
-    input_path = 14;
-    Serial.print("sensor input, ");
-    Serial.println(input_path);
-  }  //CROSS
+	else if(sensorStateDX == 0 && sensorStateSX == 0)
+	{
+		input_path = 14;
+		Serial.print("sensor input, ");
+		Serial.println(input_path);
+  	}  //CROSS
 
-   else if(sensorStateDX == 2 && sensorStateSX == 2){
-    input_path = 15;
-    Serial.print("sensor input, ");
-    Serial.println(input_path);
-  }  //EXCEPTION3
+  	else if(sensorStateDX == 2 && sensorStateSX == 2)
+   	{
+		input_path = 15;
+		Serial.print("sensor input, ");
+		Serial.println(input_path);
+  	}  //EXCEPTION3
 
-   else if(sensorStateDX == 1 && sensorStateSX == 1){
-    input_path = 16;
-    Serial.print("sensor input, ");
-    Serial.println(input_path);
-  }  //EXCEPTION4 
-  return input_path;
+	else if(sensorStateDX == 1 && sensorStateSX == 1)
+   	{
+		input_path = 16;
+		Serial.print("sensor input, ");
+		Serial.println(input_path);
+  	}  //EXCEPTION4 
+	
+	return input_path;
 }
