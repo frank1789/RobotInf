@@ -10,28 +10,28 @@
 
 									 (X=nero; O=bianco)
 							DX	SX				SX	DX				Error
-	GO_FORWARD			==	1 , 2			 O X	X O				 0	(line = nero & background = bianco) 
+	GO_FORWARD					 ==	1 , 2			 O X	X O				 0	(line = nero & background = bianco) 
 	
 	TURN_LEFT_VERY_SOFT	==	3 , 2			 O X	O O				 1
-	TURN_LEFT_SOFT		==	1 , 0			 X X	X O				 2
-	TURN_LEFT_HARD		==	3 , 0			 X X	O O				 3
-	TURN_LEFT_VERYHARD	==	3 , 1			 X O	O O				 4
+	TURN_LEFT_SOFT			 ==	1 , 0			 X X	X O				 2
+	TURN_LEFT_HARD			 ==	3 , 0			 X X	O O				 3
+	TURN_LEFT_VERYHARD	 ==	3 , 1			 X O	O O				 4
 
 	TURN_RIGHT_VERY_SOFT ==	1 , 3			 O O	X O				-1
-	TURN_RIGHT_SOFT 	==	0 , 2			 O X	X X				-2
-	TURN_RIGHT_HARD		==	0 , 3			 O O	X X				-3
+	TURN_RIGHT_SOFT			==	0 , 2			 O X	X X				-2
+	TURN_RIGHT_HARD			==	0 , 3			 O O	X X				-3
 	TURN_RIGHT_VERYHARD	==	2 , 3			 O O	O X				-4
 
-	NO_LINE				==	3 , 3			 O O	O O				 5	
+	NO_LINE							==	3 , 3			 O O	O O				 5	
 
-	EXCEPTION1			==	2 , 0			 X X	O X				 0
-	EXCEPTION2			==	0 , 1			 X O	X X				 0 
+	EXCEPTION1					 ==	2 , 0			 X X	O X				 0
+	EXCEPTION2					 ==	0 , 1			 X O	X X				 0 
 	
-	GO_FORWARD_bis		==	2 , 1			 X O	O X				 0
+	GO_FORWARD_bis			 ==	2 , 1			 X O	O X				 0
 
-	CROSS				==	0 , 0			 X X	X X				 6		 
-	EXCEPTION3		 	==	2 , 2		 	 O X	O X				 0		 
-	EXCEPTION4			==	1 , 1			 X O	X O				 0		 
+	CROSS								==	0 , 0			 X X	X X				 6		 
+	EXCEPTION3		 			 ==	2 , 2		 	 O X	O X				 0		 
+	EXCEPTION4					 ==	1 , 1			 X O	X O				 0		 
 */
 	
 int path_error(int path){

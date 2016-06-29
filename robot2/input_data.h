@@ -6,6 +6,6 @@
 bool check_obstacle(float dist_obs);
 
 //restituisce il percoso leto dai linefollower
-uint8_t read_path(uint8_t sensorStateDX, uint8_t sensorStateSX);
+int read_path(int sensorStateDX, int sensorStateSX);
 
 #endif
