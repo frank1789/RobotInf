@@ -36,7 +36,6 @@ void setup()
 
 void loop()
 {
-<<<<<<< Updated upstream
     stateMachine.update();
 }
 
@@ -53,28 +52,10 @@ void idle ()
 void start()
 {
     stateMachine.transitionTo(&Idle);
-=======
-  stateMachine.update();
-  delay(2);
-}
-
-void idle () {
-  Serial.println("Stato IDLE");
-  motorDX.stop();
-  motorSX.stop();
-  Serial.println("motori fermi");
-
-  stateMachine.transitionTo(&Line_Follower);
-}
-
-void start() {
-  stateMachine.transitionTo(&Idle);
->>>>>>> Stashed changes
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-<<<<<<< Updated upstream
 void line_follower()
 {
     Serial.println("Stato Line_Follower");
@@ -133,33 +114,4 @@ void stop()
     Serial.println("Stato STOP");
     motorDX.stop();
     motorSX.stop();
-=======
-void line_follower(){
-  Serial.println("Stato Line_Follower");
-
-  uint8_t motorSpeed = 120;
-
-  //lettura dal sensore a ultrasuoni
-  float dist_obs = ultraSensor.distanceCm();
-  int last_error = 0;
-  //verifica costantemente se ci sono oggetti sul percorso e segue la linea se ci sono ostacoli torna in Idle
-  if (check_obstacle (dist_obs) == true){
-    //lettura posizione dai sensori di linea
-    int error = path_error(read_path(lineFinderDX.readSensors(), lineFinderSX.readSensors()));
-    int correction= 10 * error + 6 * (error - last_error);
-    last_error = error;
-    motorDX.run(-motorSpeed - correction);
-    motorSX.run( motorSpeed - correction);
-  }
-else{
-  Serial.println("ostacoli sul percorso");
-  stateMachine.transitionTo(&Idle);
-	}
-}
-
-void stop(){
-	Serial.println("Stato STOP");
-  motorDX.stop();
-  motorSX.stop();
->>>>>>> Stashed changes
 }
