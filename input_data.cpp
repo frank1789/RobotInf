@@ -11,7 +11,7 @@ bool check_obstacle(float dist_obs){
   Serial.print("distanza: ");
   Serial.print(dist_obs);
   Serial.println(" cm");
-  if (dist_obs >= 15.00 || dist_obs == 0.00) check = true;
+  if (dist_obs >= 5.00 || dist_obs == 0.00) check = true;
   else check = false;
   return check;
 }
