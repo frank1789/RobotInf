@@ -19,19 +19,11 @@
   TURN_RIGHT_SOFT      ==  0 , 2       O X  X X        -2
   TURN_RIGHT_HARD      ==  0 , 3       O O  X X        -3
   TURN_RIGHT_VERYHARD  ==  2 , 3       O O  O X        -4
-<<<<<<< Updated upstream
   NO_LINE              ==  3 , 3       O O  O O         5  
   EXCEPTION1           ==  2 , 0       X X  O X         0
   EXCEPTION2           ==  0 , 1       X O  X X         0 
   GO_FORWARD_bis       ==  2 , 1       X O  O X         0     
   CROSS                ==  0 , 0       X X  X X         6     
-=======
-  NO_LINE              ==  3 , 3       O O  O O         0  
-  EXCEPTION1           ==  2 , 0       X X  O X         0
-  EXCEPTION2           ==  0 , 1       X O  X X         0 
-  GO_FORWARD_bis       ==  2 , 1       X O  O X         0     
-  CROSS                ==  0 , 0       X X  X X         0     
->>>>>>> Stashed changes
   EXCEPTION3     	  	 ==  2 , 2	   	 O X  O X         0     
   EXCEPTION4           ==  1 , 1       X O  X O         0     
 */
@@ -148,13 +140,8 @@ int path_error(int path){
     }
 
     case 10:{
-<<<<<<< Updated upstream
       //attribusico l'errore
       error = 5;
-=======
-      //attribusico l'errore da calcolare poi nella funzione PID
-      error = 0;
->>>>>>> Stashed changes
       //stampa sulla seriale per debugging
       Serial.print("case 10");
       Serial.print(", ");
@@ -202,11 +189,7 @@ int path_error(int path){
 
     case 14:{
       //attribusico l'errore da calcolare poi nella funzione PID
-<<<<<<< Updated upstream
       error = 6;
-=======
-      error = 0;
->>>>>>> Stashed changes
       //stampa sulla seriale per debugging
       Serial.print("case 14");
       Serial.print(", ");
@@ -218,11 +201,7 @@ int path_error(int path){
 
     case 15:{
       //attribusico l'errore da calcolare poi nella funzione PID
-<<<<<<< Updated upstream
       error = 0;
-=======
-      error =0 ;
->>>>>>> Stashed changes
       //stampa sulla seriale per debugging
       Serial.print("case 15");
       Serial.print(", ");
@@ -247,30 +226,14 @@ int path_error(int path){
     default: exit; break;
   }
   return error;
-<<<<<<< Updated upstream
 }
 
-uint8_t speed_control(uint8_t motorSpeed){
-  if (motorSpeed >= 255) return 255;
-  else return	motorSpeed;
+void message()
+{
+    Serial.println("Ciao! Sono in attesa di un comando:");
+    Serial.println("puoi usare:");
+    Serial.println(" l -> per partire con il line follower");
+    Serial.println(" d -> per girare a destra");    
+    Serial.println(" a -> per girare a sinistra");
+    Serial.println(" s -> per fermarti");
 }
-
-bool crossbreed(){
-  static bool direction = 1;
-  
-  if (direction == 1){
-    direction = 0;
-  }
-  else{
-    direction = 1;
-  }
-    return direction;
-} 
-=======
-}
-
-uint8_t speed_control(uint8_t motorSpeed){
-  if (motorSpeed >= 255) return 255;
-  else return	motorSpeed;
-}
->>>>>>> Stashed changes
