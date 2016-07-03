@@ -1,0 +1,51 @@
+This is BibTeX, Version 0.99d (TeX Live 2015)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: scifile.aux
+The style file: Science.bst
+Database file #1: scibib.bib
+Warning--entry type for "Makeblock" isn't style-file defined
+--line 12 of file scibib.bib
+Warning--entry type for "C++" isn't style-file defined
+--line 17 of file scibib.bib
+You've used 3 entries,
+            2300 wiz_defined-function locations,
+            740 strings with 5863 characters,
+and the built_in function-call counts, 341 in all, are:
+= -- 20
+> -- 6
+< -- 0
++ -- 4
+- -- 1
+* -- 12
+:= -- 42
+add.period$ -- 3
+call.type$ -- 3
+change.case$ -- 2
+chr.to.int$ -- 0
+cite$ -- 3
+duplicate$ -- 20
+empty$ -- 59
+format.name$ -- 1
+if$ -- 85
+int.to.chr$ -- 0
+int.to.str$ -- 3
+missing$ -- 2
+newline$ -- 12
+num.names$ -- 1
+pop$ -- 16
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 19
+stack$ -- 0
+substring$ -- 0
+swap$ -- 1
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 0
+while$ -- 1
+width$ -- 4
+write$ -- 20
+(There were 2 warnings)
