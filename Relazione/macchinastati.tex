@@ -1,51 +1,50 @@
-\section{Soluzione del problema}
-\label{solution}
-Nel dettaglio si descrive il software del robot partendo dallo strato che interfaccia le periferiche con l'unità di elaborazione.
-\subsection{Libreria Makeblock}
-L'utilizzo di questa libreria è stato fondamentale perché rappresenta la base dei tre livelli e permette allo sviluppatore di istanziare i moduli fisici come oggetti e di renderli operativi fin da subito dato che viene richiesta solo la porta a cui sono collegati.
-Utilizzando i metodi disponibili dalla classe è possibile ricavare gli input provenienti dai sensori, permettere la comunicazione con altri dispositivi mediante bluetooth, pilotare i motori.
-\subsection{Libreria Macchina a stati finiti}
-Questo secondo strato software è stato sviluppato durante le esercitazioni di laboratorio.
-
+\section{Macchina a stati finiti}
+Come riferimento in figura \ref{msf} sono stati individuati 4 stati per la gestione dell'automa. Ogni stato chiama le funzioni che vengono eseguite per espletare il proprio compito ed appositi metodi regolano la transizione da uno stato all'altro al verificarsi di specifiche condizioni.\\ 
+\emph{Line Follower} e \emph{Manual Control} rappresentano i due stati principali che permettono rispettivamente una guida autonoma sul tracciato o un controllo manuale.
+Lo stato \emph{Idle} è uno stato di attesa del robot in cui in ogni momento è possibile accedervi su decisione dell'utente e in cui lo stesso può scegliere quale modalità di funzionamento adottare.
+Lo stato \emph{Init}, infine, è solamente uno stato di inizializzazione all'avvio del robot. 
 \begin{figure}[h!t]
 \centering
-\subfloat[][\emph{Schema concettuale}.]
+\subfloat[][\emph{schema concettuale}]
    {\begin{tikzpicture}[->, >=stealth', shorten >=1pt, auto, node distance=2.5cm, semithick]
 
 %====Definizione stile stati================================================
 
 	\tikzstyle{every state}=[fill, draw=none, orange ,text=white]
   	\tikzstyle{accepting}=[green!50!black, text=white]
+  	\tikzstyle{manual}=[blue!50!black, text=white]
   	\tikzstyle{initial}= [red, text=white]
 
 %====Definizione stati e posizione===========================================
 	\node[state,initial] 			(A)                    		{\textsc{A}};
  	\node[state]          			(B) [right of=A]		{\textsc{B}};
- 	\node[state,accepting]	(C) [right of=B]		{\textsc{C}};
-  	\node[state]         			(D) [right of=C]  		{\textsc{D}};
+ 	\node[]							(B1)[right of=B]		{};
+ 	\node[state,accepting]	(C) [above of=B1, node distance=2.5 cm]		{\textsc{C}};
+  	\node[state,manual]       (D) [below of=B1, node distance=2.5 cm]  	{\textsc{D}};
   	
 %====Definizione collegamenti e stile frecce================================================================
       			 %from     stile                      scritte       	to		
       \path 	(A)		edge	[right]									(B)
       				(B)		edge	[bend left]							(C)
       				(C)		edge	[bend left]							(B)
-      				(C)		edge[right]									(D)
-      				(D)		edge[bend left]							(A);    
+      				(B)		edge[bend left]							(D)
+      				(D)		edge[bend left]							(B);    
 \end{tikzpicture}} \qquad\quad
-\subfloat[][\emph{Legenda}.]{\begin{tikzpicture}[->, >=stealth', shorten >=1pt, auto, node distance=1.5cm, semithick]
+\subfloat[][\emph{legenda}]{\begin{tikzpicture}[->, >=stealth', shorten >=1pt, auto, node distance=1.5cm, semithick]
 
 %====Definizione stile stati================================================
 
 	\tikzstyle{every state}=[fill, draw=none, orange ,text=white]
   	\tikzstyle{accepting}=[green!50!black, text=white]
+  	\tikzstyle{manual}=[blue!50!black, text=white]
   	\tikzstyle{initial}= [red, text=white]
 
 %====Definizione stati e posizione===========================================
 
-	\node[state,initial] 			(A) [label = 0:Init ]                  		{\textsc{A}}; 	
- 	\node[state]          			(B) [below of= A, label = 0:Start]		{\textsc{B}};		
- 	\node[state,accepting]	(C) [below of= B, label = 0:Line Follower]		{\textsc{C}};
-  	\node[state]         			(D) [below of= C, label = 0:Manual Control]  		{\textsc{D}};		
+	\node[state,initial] 		(A) [label = 0:Init ]                  		{\textsc{A}}; 	
+ 	\node[state]          		(B) [below of= A, label = 0:Idle]		{\textsc{B}};		
+ 	\node[state,accepting](C) [below of= B, label = 0:Line Follower]	{\textsc{C}};
+  	\node[state,manual]    (D) [below of= C, label = 0:Manual Control]{\textsc{D}};		
 
 %====Definizione collegamenti e stile frecce================================================================
       			 %from     stile                      scritte       	to		
@@ -59,20 +58,17 @@ Questo secondo strato software è stato sviluppato durante le esercitazioni di l
 \label{msf}
 \end{figure}
 
-\subsection{Libreria}
-Infine questa libreria gestisce la risposta del robot al variare degli input durante il suo funzionamento, rappresenta lo strato di interconnessione tra i due prima analizzati.
-Questa classe inizializza un oggetto che ammette in input i dati provenienti del sensore a ultra suoni e dai sensori di linea: con il primo dato verifica la presenza di ostacoli nella parte frontale se assenti o distanti almeno $15 \, cm$ da il via libera a proseguire lungo a direzione altrimenti impartisce al robot il comando di ruotare sul proprio asse e proseguire nella direzione opposta.
-Con il secondo input proveniente dai sensori di linea riconosce il percorso affrontato secondo una serie di casi codificati secondo la tabella \ref{error_normali} attribuendo un errore. Tale valore viene utilizzato per corregere la velocità dei motori tramite un controller \textsc{pd}, si descriverà in dettaglio nella sezione \ref{PID}.
-Vengono inoltre codificati dei casi eccezionali consultabili nella tabella \ref{eccezioni} a cui è stato assegnato un errore $0$ perchè \dots
-
-\begin{table}[h]
+\subsection{Line Follower}
+Nella modalità line follower in ogni istante viene effettuata la verifica della presenza ostacoli mediante sensore ad ultrasuoni.
+Qualora non venisse riscontrato un pericolo di collisione, entro una prefissata distanza di sicurezza, l'algoritmo prosegue con la lettura del tracciato altrimenti impartisce al robot il comando di invertire il moto.
+Al contempo la coppia di sensori di linea istantaneamente legge il tracciato e lo codifica secondo la tabella \ref{error_normali}, attribuendo un errore che serve a correggere la velocità dei motori mediante un controllo \textsc{PID}\footnote{Proporzionale-Integrativo-Derivativo, comunemente abbreviato come PID}.
+\begin{table}[h]\footnotesize
 \center
 \begin{tabular}{llccr}
 \label{normali}
-                             %      (X=nero; O=bianco)
                           			&			&DX  SX&	SX  DX    	& Errore\\
 \hline \\
-  GO FORWARD          		& ==  	&1, 2  	& O X  X O 	& 0\\				% (line = nero & background = bianco) 
+  GO FORWARD          		& ==  	&1, 2  	& O X  X O 	& 0\\% (line = nero & background = bianco) 
   TURN LEFT VERY SOFT 	&	==	&	3, 2	&	O X  O O  &	1\\
   TURN LEFT SOFT       	&	==  	&	1,	0	&	X X  X O   &	2\\
   TURN LEFT HARD     		&	==  	&	3, 0	&	X X  O O	&	3\\
@@ -81,32 +77,35 @@ Vengono inoltre codificati dei casi eccezionali consultabili nella tabella \ref{
   TURN RIGHT SOFT    		&	==  	&	0, 2	& 	O X  X X  	&	-2\\
   TURN RIGHT HARD   		&	== 	&	0, 3	&	O O  X X  	&	-3\\
   TURN RIGHT VERYHARD &	== 	&	2, 3	&	O O  O X	&	-4\\
-  NO LINE           				&	== 	&	3, 3	&	O O  O O  &	  5\\
-  CROSS              				&	== 	& 0, 0   &	X X  X X   	&  6\\\\
+  NO LINE           				&	== 	&	3, 3	&	O O  O O  &	 5\\
+  CROSS              				&	== 	& 0, 0   &	X X  X X   	&  6\\
   \hline
 \end{tabular}
 \caption{Codifica input dei sensori di linea (X = tracciato nero; O = sfondo bianco)}
 \label{error_normali}
 \end{table}
 
-\begin{table}
+\noindent Per garantire una maggiore robustezza al programma sono state considerate anche le casistiche eccezionali che coprono eventuali guasti o malfunzionamenti (ad esempio linea a contrasto invertito, sporco sui sensori o sul tracciato), come mostrato in tabella \ref{eccezioni}.
+
+\begin{table}[h]\footnotesize
 \center
 \begin{tabular}{llccc}
 \label{eccezioni}
 								&			&	DX  SX	&	SX  	DX    &    Errore\\
  \hline\\
 	GO FORWARD bis    	&	== 	&	2, 1		&	X O  O X	&  0\\
-	EXCEPTION1       		&	==  	&	2, 0		&	X X  O X   &	0\\
-  	EXCEPTION2        	&	== 	&	0, 1  	&	X O  X X   &  0\\
- 	EXCEPTION3     	 	&	==  	&	2, 2	 	&	O X  O X	&  0\\\\
-  \hline
+	EXCEPTION1       		&	==  	&	2, 0		&	X X  O X   &	1\\
+  	EXCEPTION2        	&	== 	&	0, 1  	&	X O  X X   &  -1\\
+ 	EXCEPTION3     	 	&	==  	&	2, 2	 	&	O X  O X	&  0\\
+ 	 EXCEPTION4           &	==  &1 , 1      & X O  X O     &	 0\\         
+ 	\hline
 \end{tabular}
 \caption{Codifica \textsc{casi eccezionali} (X = tracciato nero; O = sfondo bianco)}
 \label{eccezioni}
 \end{table}
 
-\noindent Quando il robot raggiunge un incrocio si arresta uscendo dallo stato di line follower e passa nello stato idle attendendo istruzioni dall'utente che può scegliere dalla maschera disponibile sul terminale, quindi inviare il comando tramite connessione bluetooth. Il robot torna nello stato di linefollower.
-
+%\noindent Quando il robot raggiunge un incrocio si arresta, esce dallo stato di line follower e passa nello stato idle attendendo istruzioni dall'utente che può scegliere dalla maschera disponibile sul terminale, quindi inviare il comando tramite connessione bluetooth. Il robot torna nello stato di line follower.
+%In condizioni totalmente manuale il robot risponde ai comandi inviati da bluetooth evitando gli ostacoli rilevati nella sola parte frontale.
 %Il modo più efficiente di progettare un controllo di un robot di questo tipo è basato sul modello di macchina a stati finiti in cui ad ogni stato corrisponde una specifica funzione del robot.
 %% inserire diagramma a stati e riferimento alla figura
 %Lo stato è  caratterizzato da una funzione d'ingresso (\emph{enter function}), una funzione di aggiornamento (\emph{update function}), un funziona di uscita (\emph{exit function}).
@@ -115,46 +114,6 @@ Vengono inoltre codificati dei casi eccezionali consultabili nella tabella \ref{
 
 %\subsection{Stato Init}
 %Stato di inizializzazione della macchina all'avvio del robot. Garantisce lo stato di fermo dei motori mediante il richiamo della funzione di stop e poi si aggiorna con la funzione start che  invoca la transizione verso lo \emph{stato Idle}.
-%
-%\begin{figure}[htb]
-%\centering
-%\subfloat[][\emph{Stato}.]{\begin{tikzpicture}[->, >=stealth', shorten >=1pt, auto, node distance=2.5cm, semithick]
-%%====Definizione colori 	 paticolari===========================================
-%	\definecolor{royalblue}{cmyk}{1,0.50,0,0}
-%  	\definecolor{cerulean}{cmyk}{0.94,0.11,0,0}
-%	\definecolor{violet}{cmyk}{0.79,0.88,0,0}
-%%====Definizione stile stati================================================
-%	\tikzstyle {state1}=[circle, top color=white, bottom color=orange!40, draw, violet, minimum width=1cm]
-%	\tikzstyle{state2}=[circle, top color=white, bottom color=cerulean!40, draw, royalblue, minimum width=1cm]
-%%====Definizione stati e posizione===========================================
-%	%\draw[very thick] (2.5,0)circle[radius=4cm];
-%	\draw [very thick,dashed](2.5,0) ellipse (4.5cm and 2cm);
-%	\node[state1]	(A)          			{$f_{1}$};
-% 	\node[state2]	(B) [right of=A]	{$f_{2}$};
-% 	\node[state1]	(C) [right of=B]	{$f_{3}$};
-%%====Definizione collegamenti e stile frecce================================================================
-%      			 %from     stile                      scritte       	to		
-%      \path 	(A)		edge	[bend left]							(B)
-%      				(B)		edge	[bend left]							(C)
-%      				(C)		edge	[bend left]							(B)
-%	     			(B)		edge	[bend left]							(A);   
-%\end{tikzpicture}}\qquad\quad
-%\subfloat[][\emph{Legenda}.]{\begin{tikzpicture}[->, >=stealth', shorten >=1pt, auto, node distance=1.5cm, semithick]
-%%====Definizione colori 	 paticolari===========================================
-%	\definecolor{royalblue}{cmyk}{1,0.50,0,0}
-%  	\definecolor{cerulean}{cmyk}{0.94,0.11,0,0}
-%	\definecolor{violet}{cmyk}{0.79,0.88,0,0}
-%%====Definizione stile stati================================================
-%	\tikzstyle {state1}=[circle, top color=white, bottom color=orange!40, draw, violet, minimum width=1cm]
-%	\tikzstyle{state2}=[circle, top color=white, bottom color=cerulean!40, draw, royalblue, minimum width=1cm]
-%%====Definizione stati e posizione===========================================
-%	\node[state1]	(A) [label = 0: \textsc{enter function}]           			{$f_{1}$};
-% 	\node[state2]	(B) [below of=A, label = 0:\textsc{update function}]	{$f_{2}$};
-% 	\node[state1]	(C) [below of=B, label = 0:\textsc{update function}]	{$f_{3}$}; 
-%\end{tikzpicture}}
-%\caption{Rappresentazione interna dello stato}
-%\label{stato}
-%\end{figure}
 %
 %
 %\subsection{Stato Idle}

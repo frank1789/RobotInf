@@ -1,38 +1,41 @@
-\section{Introduzione}
-\label{introduzine}
-Per il progetto del corso di Informatica e Programmazione si è scelto di realizzare un robot mobile con azionamento differenziale a due ruote con componenti \emph{Makeblock}.
-
+\section*{Introduzione}
+Nella prima sezione del report si presentano le scelte preliminari effettuate al fine di soddisfare al meglio le caratteristiche di base richieste. Nella seconda sezione si descrive la struttura del codice realizzato soffermandosi sui punti chiave che ne hanno determinato lo sviluppo. Infine nella conclusione si riassumono i risultati raggiunti.
+\section{Scelte progettuali}
+Il progetto può essere suddiviso in due parti: una, inerente alla scelta ed assemblaggio dei componenti meccanici ed elettronici, mentre l'altra relativa allo sviluppo del software di controllo.
+Ciascuna di esse viene analizzata  successivamente nei prossimi paragrafi. 
 \subsection{Hardware}
-Non avendo vincoli progettuali si è scelto di utilizzare un struttura semplice come riportata in figura \ref{}. %inserire riferimento figure.
-La parte elettronica è basata sulla scheda MeOrion baseboard, un modulo a ultra suoni per il rilevamento degli ostacoli, due moduli per i sensori tipo MeLineFollower, un modulo bluetooth, in figura \ref{schema}, il dettaglio dei collegamenti. La lista completa dei componenti in tabella \ref{bom}.
-La scelta di adottare una coppia di sensori di linea è stata vagliata per una migliore lettura del percorso, identificazione di casi particolari come ad esempio curve a 90$^{\circ}$, incroci e per un miglior controllo dei motori.
-
-\begin{figure}[htp]
+Non avendo vincoli specifici si è scelto di utilizzare un struttura semplice come riportata in figura \ref{struct}, ma che potesse al tempo stesso soddisfare tutte le funzionalità prefissate.%inserire riferimento figure.
+\begin{figure}[h!t]
 \centering
-\hfill
-\begin{minipage}[b]{.65\columnwidth}
- \includegraphics[width=0.75 \textwidth]{SCHEMA}
-	\caption{Schema di collegamento}
-	\label{schema}
-\end{minipage}
-\begin{minipage}[b]{.3\columnwidth}
-  \begin{tabular}{ccl}
-	Num. & Q.ta & Modulo\\
-	\hline
-	1		&		1	&	MeOrion\\
-	2		&		1	&	MeBluetooth \\
-	3		&		1	&	MeUltra \\
-	4		&		1	&	Batteria Li-Po\\
-	5		&		1	&	Me\\
-	6		&		2	&	MeDCMotor\\
-	7		&		2	&	MeLineFollower	\\
-	\hline
-  \end{tabular}
-  \captionof{table}{Lista componenti}
-  \label{bom}
-\end{minipage}\hspace*{\fill}
+\subfloat[][\emph{vista frontale}]{
+\includegraphics[width=.4\textwidth]{IMG_0759.jpg} }\quad
+\subfloat[][\emph{scorcio}]{
+\includegraphics[width=.4\textwidth]{IMG_0763.jpg}}
+\caption{Struttura robot}
+\label{struct}
 \end{figure}
+\\La parte elettronica è basata sulla scheda MeOrion baseboard, un modulo a ultrasuoni per il rilevamento degli ostacoli, due moduli per i sensori tipo MeLineFollower, un modulo bluetooth. In figura \ref{schema} è illustrato il dettaglio dei collegamenti.
+La scelta di adottare una coppia di sensori di linea è stata fatta per ottenere una migliore lettura del percorso, per una maggiore capacità di identificazione di casi particolari, come ad esempio curve a 90$^{\circ}$ o gli incroci e per un miglior controllo dei motori.
+\begin{figure}[h]
+	\subfloat[][\emph{collegamenti}]{\includegraphics[width=.65\textwidth]{SCHEMA}}\quad
+\subfloat[][\emph{lista dei compomenti}]{\begin{tikzpicture}[->, >=stealth', shorten >=1pt, auto, node distance=1cm, semithick]
 
+%====Definizione stile stati================================================
+
+	\tikzstyle{every state}=[fill, draw, white ,text=black]
+
+%====Definizione stati e posizione===========================================
+
+	\node[state](A) [label = 0:Me Orion ]                  			{1}; 	
+ 	\node[state](B) [below of= A, label = 0:Me Bluetooth]	{2};		
+ 	\node[state](C) [below of= B, label = 0:Line Follower]	{3};
+  	\node[state](D) [below of= C, label = 0:Me Ultrasonic Sensor]{4};		
+  	\node[state](E) [below of= D, label = 0:Batteria Li-Po]{5};	
+  	\node[state](F) [below of= E, label = 0:Me Dual DC MotorDriver]{6};
+  	\node[state](G) [below of= F, label = 0:Me DCMotor]{7};	
+  	\end{tikzpicture}}
+\caption{Componenti elettronici}
+\label{schema}
+\end{figure}		
 \subsection{Software}
-Il software che gestisce la logica del è stato pensato modulare per aumentare la facilità di realizzazione e manutenzione.
-Si articola su tre \emph{layer} le librerie proprietarie Makeblock uililizzate per gestire i moduli collegati alle porte della scheda, una classe che implementa la macchina a stati finiti che gestisce gli stati dell'automa infine una classe che connette i due livelli precedenti permettendo la lettura degli input dai sensori e il verificarsi delle condizioni per passare da uno stato all'altro.
+L'implementazione del software, basata sul C++, è il cuore del progetto. Ci si è avvalsi delle librerie proprietarie Makeblock, della classe macchina a stati finiti, precedentemente realizzata, e di metodi appositamente elaborati per una corretta gestione delle funzionalità richieste.
